@@ -1,14 +1,15 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { CISPaginatorModule } from 'src/app/paginator/cis-paginator.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule
+    BrowserModule,
+    CISPaginatorModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
