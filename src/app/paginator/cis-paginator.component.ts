@@ -28,9 +28,8 @@ export class CISPaginatorComponent {
   @Input() hideDirectionArrows: boolean;
 
   @Output() pageChange: EventEmitter<any> = new EventEmitter<any>();
-  @Output() pageSizeChange: EventEmitter<any> = new EventEmitter<any>();
 
-  public _pageIndex = 8;
+  public _pageIndex = 0;
 
   get totalPages(): number {
     return this.totalItems ?
@@ -107,11 +106,20 @@ export class CISPaginatorComponent {
 
   private onPageIndexChange(pageIndex: number) {
     this.pageIndex = pageIndex;
-    this.pageChange.emit(this.pageIndex + 1);
+    this.emitPageChangeEvent();
   }
 
   private onPageSizeChange() {
     this.pageIndex = 0;
-    this.pageSizeChange.emit(Number(this.pageSize));
+    this.emitPageChangeEvent();
+  }
+
+  private emitPageChangeEvent() {
+    this.pageChange.emit({
+      pageIndex: this.pageIndex,
+      pageSize: Number(this.pageSize),
+      startIndex: this.pageItems.startIndex,
+      endIndex: this.pageItems.endIndex
+    });
   }
 }

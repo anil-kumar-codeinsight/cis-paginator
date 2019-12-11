@@ -1,0 +1,116 @@
+<div class="container">
+  <div>
+    <div #toolbar style="background: white;">
+  
+      <ng-content select="[title]"></ng-content>
+  
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <div fxFlex fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px" class="actions-panel">
+          <ng-content select="[actions]"></ng-content>
+          <ng-container *ngIf="actions?.length">
+            <ng-container *ngFor="let action of actions">
+              <ng-container *ngIf="!(action.hidden && action.hidden())" [ngSwitch]="action.type">
+                <button *ngSwitchCase="'flat'" mat-flat-button color="primary" (click)="action.click(this)"
+                  [disabled]="action.disabled && action.disabled(this)">{{ action.label }}</button>
+                <button *ngSwitchCase="'stroked'" mat-stroked-button color="primary" (click)="action.click(this)"
+                  [disabled]="action.disabled && action.disabled(this)">{{ action.label }}</button>
+                <button *ngSwitchDefault mat-button color="primary" (click)="action.click(this)"
+                  [disabled]="action.disabled && action.disabled(this)">{{ action.label }}</button>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  
+  <div *ngIf="dataSource.data?.length" #tableContainer class="table-container">
+    <mat-table [dataSource]="tableData" matSort [matSortActive]="sortActive" [matSortDirection]="sortDirection"
+      matSortDisableClear="true">
+  
+      <ng-container *ngFor="let column of columns" [matColumnDef]="column.key">
+  
+        <mat-header-cell *matHeaderCellDef mat-sort-header [start]="column.sortDirection ? column.sortDirection : 'asc'"
+          [disabled]="!column.sortable" (mouseenter)="headerTooltip.show()" (mouseleave)="headerTooltip.hide()"
+          (click)="column.headerClick && column.headerClick()" [ngStyle]="column.headerStyle" [hidden]="column.hidden">
+          <span #headerTooltip="matTooltip" [matTooltip]="column.headerTooltip">
+            <ng-container>
+              <span [innerHTML]="column.label"></span>
+              <img *ngIf="column.headerTooltip" src="assets/images/information-icon.png" style="margin: 0 3px;">
+            </ng-container>
+          </span>
+        </mat-header-cell>
+  
+        <mat-cell *matCellDef="let element" (mouseenter)="cellTooltip.show();" (mouseleave)="cellTooltip.hide()"
+          [hidden]="column.hidden" [attr.color]="column.cellColor && column.cellColor(element)"
+          [ngStyle]="column.cellStyle && column.cellStyle(element)" [attr.data-cell-value]="element[column.key]">
+          <span class="icon" #cellTooltip="matTooltip" [matTooltip]="column.cellTooltip && column.cellTooltip(element)"
+            (click)="column.cellClick && column.cellClick(element)"
+            [style.cursor]="column.cellClick ? 'pointer' : 'default'">
+  
+            <ng-container *ngIf="column.type === 'date'; else number">
+              {{ element[column.key] }}
+            </ng-container>
+            <ng-template #number>
+              <ng-container *ngIf="column.type === 'number'; else imageIcon">
+                {{ element[column.key] | number }}
+              </ng-container>
+            </ng-template>
+            <ng-template #imageIcon>
+              <ng-container *ngIf="column.type === 'imageIcon'; else link">
+                <img [src]="column.imageSrc" />
+              </ng-container>
+            </ng-template>
+            <ng-template #link>
+              <ng-container *ngIf="column.type === 'link'; else default">
+                <a [innerHtml]="element[column.key]"></a>
+              </ng-container>
+            </ng-template>
+            <ng-template #default>
+              {{element[column.key]}}
+            </ng-template>
+          </span>
+        </mat-cell>
+  
+        <mat-footer-cell *matFooterCellDef>
+        </mat-footer-cell>
+  
+      </ng-container>
+  
+      <ng-container matColumnDef="more">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-select placeholder="..." panelClass="table-more-panel" [value]="showColumnsValue"
+            (selectionChange)="showColumnsChange($event)" multiple disableOptionCentering>
+            <mat-select-trigger>
+              <span>...</span>
+            </mat-select-trigger>
+            <p>Show Columns</p>
+            <ng-container *ngFor="let col of columns">
+              <mat-option *ngIf="!col.fixedColumn" [value]="col.key" [ngStyle]="col.showColumnsStyle">{{col.label}}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row"></mat-cell>
+        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+      </ng-container>
+  
+      <ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns">
+        </mat-header-row>
+      </ng-container>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" [ngStyle]="rowStyle(row)" [ngClass]="rowClass(row)"
+        [class.selected]="selection.isSelected(row)" (click)="select(row)" [matTooltip]="rowTooltip(row)"></mat-row>
+    </mat-table>
+  </div>
+  
+  <div [hidden]="!dataSource.data?.length">
+    <cis-pagination [totalItems]="totalItems" (pageChange)="onPageChange($event)"></cis-pagination>
+  </div>
+  
+  <ng-container *ngIf="!dataSource.data?.length">
+    <br>
+    <p [innerHTML]="notFound"></p>
+  </ng-container>
+</div>
