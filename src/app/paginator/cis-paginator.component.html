@@ -31,6 +31,9 @@
         <option *ngFor="let pageSizeOption of pageSizeOptions" [value]="pageSizeOption">
           {{pageSizeOption}}
         </option>
+        <option [value]="totalItems">
+          ALL
+        </option>
       </select>
     </li>
   </ul>
