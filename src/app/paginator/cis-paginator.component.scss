@@ -1,20 +1,32 @@
 .active {
-    display: inline-block;
-    border-radius: 50%;
-    height: 40px;
-    width: 40px;
-    background: linear-gradient(to top, #79c142, transparent);
-    text-align: -webkit-center;
+  display: inline-block;
+  border-radius: 50%;
+  height: 35px;
+  width: 36px;
+  background: #000000;
+  color: #ffffff;
+  text-align: -webkit-center;
 }
 
-.font-25 {
-    font-size: 25px;
+.font-20 {
+  font-size: 20px;
 }
 
 .cursor-hand {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .disabled {
-    color: lightgray;
+  color: lightgray;
 }
+
+::ng-deep {
+  .mat-form-field-infix {
+    border-top: none;
+  }
+
+  .mat-form-field-infix {
+    width: 100px !important;
+  }
+}
+

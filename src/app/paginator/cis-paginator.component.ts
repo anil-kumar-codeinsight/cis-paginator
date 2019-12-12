@@ -46,7 +46,7 @@ export class CISPaginatorComponent {
   get pageItems(): any {
     const pageSize = Number(this.pageSize);
     const start: number = this.pageIndex * pageSize;
-    const end = Math.min((start + pageSize), (start + (Number(this.totalItems) - start)));
+    const end = Math.min((start + pageSize), Number(this.totalItems));
     return {
       startIndex: start,
       endIndex: end

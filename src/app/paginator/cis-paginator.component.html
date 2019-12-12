@@ -1,40 +1,40 @@
 <div class="container">
-  <ul class="pagination justify-content-{{position}} font-25">
-    <li class="mr-5">
+  <ul class="pagination justify-content-{{position}} font-20">
+    <li class="mr-5 p-1">
       <span *ngIf="!hidePageItems">
         {{pageItems.startIndex + 1}} - {{pageItems.endIndex}} of {{ totalItems }}
       </span>
     </li>
-    <li [hidden]="totalPages < 10" class="mr-2 cursor-hand" [ngClass]="{'disabled': pageHidden.preTenPage}">
+    <li [hidden]="totalPages < 10" class="mr-2 p-1 cursor-hand" [ngClass]="{'disabled': pageHidden.preTenPage}">
       <a (click)="!pageHidden.preTenPage ? onPageIndexChange(pageIndex - 10) : null">&lt;&lt;</a>
     </li>
-    <li class="mr-2 cursor-hand" [ngClass]="{'disabled': pageHidden.prePage}">
+    <li class="mr-2 p-1 cursor-hand" [ngClass]="{'disabled': pageHidden.prePage}">
       <a (click)="!pageHidden.prePage ? onPageIndexChange(pageIndex - 1) : null">&lt;</a>
     </li>
-    <li *ngIf="!pageHidden.firstPage" class="mr-2 cursor-hand">
+    <li *ngIf="!pageHidden.firstPage" class="mr-2 p-1 cursor-hand">
       <a (click)="onPageIndexChange(0)">1...</a>
     </li>
-    <li class="mr-2 cursor-hand" *ngFor="let page of pageRange" [ngClass]="{'active': page === pageIndex}">
+    <li class="mr-2 p-1 cursor-hand" *ngFor="let page of pageRange" [ngClass]="{'active': page === pageIndex}">
       <a (click)="page !== pageIndex ? onPageIndexChange(page) : null">{{ page + 1 }}</a>
     </li>
-    <li *ngIf="!pageHidden.lastPage" class="mr-2 cursor-hand">
+    <li *ngIf="!pageHidden.lastPage" class="mr-2 p-1 cursor-hand">
       <a (click)="onPageIndexChange(totalPages - 1)">...{{ totalPages }}</a>
     </li>
-    <li class="mr-2 cursor-hand" [ngClass]="{'disabled': pageHidden.nextPage}">
+    <li class="mr-2 p-1 cursor-hand" [ngClass]="{'disabled': pageHidden.nextPage}">
       <a (click)="!pageHidden.nextPage ? onPageIndexChange(pageIndex + 1) : null">&gt;</a>
     </li>
-    <li [hidden]="totalPages < 10" class="mr-2 cursor-hand" [ngClass]="{'disabled': pageHidden.nextTenPage}">
+    <li [hidden]="totalPages < 10" class="mr-2 p-1 cursor-hand" [ngClass]="{'disabled': pageHidden.nextTenPage}">
       <a (click)="!pageHidden.nextTenPage ? onPageIndexChange(pageIndex + 10) : null">&gt;&gt;</a>
     </li>
     <li class="ml-5 cursor-hand">
-      <select [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
-        <option *ngFor="let pageSizeOption of pageSizeOptions" [value]="pageSizeOption">
-          {{pageSizeOption}}
-        </option>
-        <option [value]="totalItems">
-          ALL
-        </option>
-      </select>
+      <mat-form-field>
+        <mat-select [(value)]="pageSize" (selectionChange)="onPageSizeChange()">
+          <mat-option *ngFor="let pageSizeOption of pageSizeOptions" [value]="pageSizeOption">
+            {{pageSizeOption}}
+          </mat-option>
+          <mat-option [value]="totalItems">ALL</mat-option>
+        </mat-select>
+      </mat-form-field>
     </li>
   </ul>
 </div>

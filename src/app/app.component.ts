@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { CISSearchTableColumn } from './cis-search-table/cis-search-table.model';
+import { CISSearchTableColumn, CISSearchTabelActions, CISSearchTableField } from './cis-search-table/cis-search-table.model';
 import { SearchTableService } from './core/services/search-table/search-table.service';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -23,13 +22,32 @@ export class AppComponent {
     { key: 'dob', label: 'Date of Birth', type: 'date' }
   ];
 
+  actions: Array<CISSearchTabelActions> = [
+    {
+      label: 'Flat Button',
+      type: 'flat',
+      tooltip: 'Flat button testing',
+      click: () => { },
+    },
+    {
+      label: 'Stroked Button',
+      type: 'stroked',
+      tooltip: 'Stroked button testing',
+      click: () => { },
+    },
+    {
+      label: 'Primary Button',
+      tooltip: 'Primary button testing',
+      click: () => { },
+    }
+  ];
+
+  quickSearchField: CISSearchTableField = {
+    key: 'searchString',
+    label: 'Quick Search'
+  }
+
   search(searchParams: any = {}) {
-    return this.searchTableService.getDummyData().pipe(
-      map(res => {
-        return {
-          data: res,
-          totalItems: res.length
-        };
-      }));
+    return this.searchTableService.getDummyData(searchParams);
   }
 }

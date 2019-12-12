@@ -21,20 +21,26 @@ export class CISSearchTableColumn {
 
 export class CISSearchTableField {
     key: string;
-    type: 'default' | 'dropdown' | 'checkbox' | 'date' = 'default';
+    type?: 'default' | 'dropdown' | 'checkbox' | 'date';
     label?: string;
     tooltip?: string;
     valueChange?: (value) => any;
     disabled?: () => any;
     hidden?: () => any;
+    validators?: any;
+    maxLength?: number;
+    minLength?: number;
 
+    constructor() {
+        this.type = 'default';
+    }
 }
 
 export class CISSearchTabelActions {
     label: string;
-    type: 'flat' | 'primary' | 'stroked' = 'primary';
+    type?: 'flat' | 'stroked' | 'default';
     tooltip?: string;
     click: () => any;
-    disabled: () => any;
-    hidden: () => any;
+    disabled?: () => any;
+    hidden?: () => any;
 }
